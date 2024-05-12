@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
-class Workname(BaseModel):
+class Product(BaseModel):
     email: EmailStr
     Name: str
     Role: str
