@@ -10,14 +10,11 @@ from Shelf_views import router as Shelf_router
 from Assortment_views import router as Assortment_router
 from Worker import router as Worker_router
 from api_v1 import router as router_v1
-from core.models import Base, db_helper
 from core.config import settings
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with db_helper.engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
 
     yield
 
