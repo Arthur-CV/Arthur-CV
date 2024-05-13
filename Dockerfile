@@ -1,15 +1,18 @@
 FROM python:3.10
 
-RUN mkdir /fastapi_app
+RUN mkdir /src
 
-WORKDIR /fastapi_app
+WORKDIR /src
 
-COPY requirements.txt .
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY . .
 
-WORKDIR .venv
+WORKDIR ./app app
 
 #CMD gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000

@@ -1,0 +1,30 @@
+version '2.26.1'
+
+Services:
+  app:
+    container_name: fastApiProject
+    build: ./
+    depends_on:
+      -db
+    command: bash -c 'while!</dev/tcp/sqlite3/5432; do sleep 1; done; uvicorn app.main:app --host 0.0.0.0 --port 8000'
+    volumes:
+      - ./app:/src/app
+    ports:
+      - ${APP_HOST_PORT}:8000
+    restart: always
+    env file:
+      - .env
+  db:
+    container_name: db.sqlite3
+    Image: db.sqlite3
+    environment:
+     -DB_HOST= os.environ.get("DB_HOST")
+     -DB_PORT= os.environ.get("DB_PORT")
+     -DB_NAME= os.environ.get("DB_NAME")
+     -DB_USER= os.environ.get("DB_USER")
+     -DB_PASS= os.environ.get("DB_PASS")
+    port:
+     - ${SQLITE3_DB_HOST_PORT}:5432
+    volumes:
+     - .sqlite3:/var/lib/sqlite3/data
+    restart: always
